@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Matthew Denny" />
 
-<meta name="date" content="2016-10-24" />
+<meta name="date" content="2017-05-26" />
 
 <title>Getting started with phrasemachine</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Getting started with phrasemachine</h1>
 <h4 class="author"><em>Matthew Denny</em></h4>
-<h4 class="date"><em>2016-10-24</em></h4>
+<h4 class="date"><em>2017-05-26</em></h4>
 
 
 
@@ -102,19 +102,29 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We begin by loading the package and some example data from the <code>quanteda</code> R package. In this example, we will make use of 5 U.S. presidential inaugural speeches.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phrasemachine)</code></pre></div>
 <pre><code>## phrasemachine: Simple Phrase Extraction
-## Version 1.0.0 created on 2016-10-23.
+## Version 1.1.1 created on 2017-05-25.
 ## copyright (c) 2016, Matthew J. Denny, Abram Handler, Brendan O'Connor.
 ## Type help('phrasemachine') or
 ## vignette('getting_started_with_phrasemachine') to get started.
 ## Development website: https://github.com/slanglab/phrasemachine</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quanteda)</code></pre></div>
+<pre><code>## quanteda version 0.9.9.65</code></pre>
+<pre><code>## Using 3 of 4 cores for parallel computing</code></pre>
+<pre><code>## 
+## Attaching package: 'quanteda'</code></pre>
+<pre><code>## The following object is masked from 'package:utils':
+## 
+##     View</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load in U.S. presidential inaugural speeches from Quanteda example data.</span>
-corp &lt;-<span class="st"> </span>quanteda::<span class="kw">corpus</span>(quanteda::inaugTexts)
-<span class="co"># use first 5 documents for example</span>
-documents &lt;-<span class="st"> </span>quanteda::<span class="kw">texts</span>(corp)[<span class="dv">1</span>:<span class="dv">5</span>]
+documents &lt;-<span class="st"> </span>quanteda::data_corpus_inaugural
+<span class="co"># use first 10 documents for example</span>
+documents &lt;-<span class="st"> </span>documents[<span class="dv">1</span>:<span class="dv">10</span>,]
 <span class="co"># take a look at the document names</span>
 <span class="kw">print</span>(<span class="kw">names</span>(documents))</code></pre></div>
-<pre><code>## [1] &quot;1789-Washington&quot; &quot;1793-Washington&quot; &quot;1797-Adams&quot;      &quot;1801-Jefferson&quot; 
-## [5] &quot;1805-Jefferson&quot;</code></pre>
+<pre><code>##  [1] &quot;1789-Washington&quot; &quot;1793-Washington&quot; &quot;1797-Adams&quot;     
+##  [4] &quot;1801-Jefferson&quot;  &quot;1805-Jefferson&quot;  &quot;1809-Madison&quot;   
+##  [7] &quot;1813-Madison&quot;    &quot;1817-Monroe&quot;     &quot;1821-Monroe&quot;    
+## [10] &quot;1825-Adams&quot;</code></pre>
 <p>Phrasemachine provides one main function: <code>phrasemachine()</code>, which takes as input a vector of strings (one string per document), or a <code>quanteda</code> corpus object. This function returns phrases extracted from the input documents in one of two forms. The first option, specified by selecting <code>return_phrase_vectors = TRUE</code> returns a list object. Each entry in the list object represents a document, and is a character vector with an extracted phrase as each entry in the vector. If <code>return_phrase_vectors = FALSE</code>, then a character vector is returned by the function. Each entry in this character vector will be an extracted phrase, and the unigrams in these phrases will be underscore separated. Selecting this option will allow the user to assign the resulting character vector back into a <code>quanteda</code> corpus object for use in their normal preprocessing pipeline.</p>
 <p>The minimum and maximum token length for phrases may be specified via the <code>minimum_ngram_length</code> and <code>maximum_ngram_length</code> arguments, which default to 1 and 8 respectively. The <code>regex</code> argument can be used to supply a custom regular expression for phrase extraction, but defaults to <code>&quot;(A|N)*N(PD*(A|N)*N)*&quot;</code>, which is the <strong>SimpleNP</strong> grammar in <a href="https://brenocon.com/handler2016phrases.pdf">Hander et al. (2016)</a>). If <code>return_phrase_vectors = TRUE</code> then the user may additionally specify <code>return_tag_sequences = TRUE</code> (the default value is <code>FALSE</code>), to return the tag sequences associated with each phrase. This can be useful if the user wishes to perform further selection on specific tag patterns.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># run phrasemachine</span>
@@ -123,16 +133,26 @@ phrases &lt;-<span class="st"> </span><span class="kw">phrasemachine</span>(docu
                          <span class="dt">maximum_ngram_length =</span> <span class="dv">8</span>,
                          <span class="dt">return_phrase_vectors =</span> <span class="ot">TRUE</span>,
                          <span class="dt">return_tag_sequences =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## Currently tagging document 1 of 5 
-## Currently tagging document 2 of 5 
-## Currently tagging document 3 of 5 
-## Currently tagging document 4 of 5 
-## Currently tagging document 5 of 5 
-## Extracting phrases from document 1 of 5 
-## Extracting phrases from document 2 of 5 
-## Extracting phrases from document 3 of 5 
-## Extracting phrases from document 4 of 5 
-## Extracting phrases from document 5 of 5</code></pre>
+<pre><code>## Currently tagging document 1 of 10 
+## Currently tagging document 2 of 10 
+## Currently tagging document 3 of 10 
+## Currently tagging document 4 of 10 
+## Currently tagging document 5 of 10 
+## Currently tagging document 6 of 10 
+## Currently tagging document 7 of 10 
+## Currently tagging document 8 of 10 
+## Currently tagging document 9 of 10 
+## Currently tagging document 10 of 10 
+## Extracting phrases from document 1 of 10 
+## Extracting phrases from document 2 of 10 
+## Extracting phrases from document 3 of 10 
+## Extracting phrases from document 4 of 10 
+## Extracting phrases from document 5 of 10 
+## Extracting phrases from document 6 of 10 
+## Extracting phrases from document 7 of 10 
+## Extracting phrases from document 8 of 10 
+## Extracting phrases from document 9 of 10 
+## Extracting phrases from document 10 of 10</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># look at some example phrases</span>
 <span class="kw">print</span>(phrases[[<span class="dv">1</span>]]$phrases[<span class="dv">1</span>:<span class="dv">10</span>])</code></pre></div>
 <pre><code>##  [1] &quot;Fellow-Citizens_of_the_Senate&quot; &quot;House_of_Representatives&quot;     
@@ -150,7 +170,7 @@ phrases &lt;-<span class="st"> </span><span class="kw">phrasemachine</span>(docu
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

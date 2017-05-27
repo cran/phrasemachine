@@ -13,13 +13,14 @@ coarsen_POS_tags(tag_vector)
 A vector of coarse tags.
 }
 \description{
-Coarsens PTB or Petrov/Gimpel coarse tags into one of five
+Coarsens PTB or Petrov/Gimpel coarse tags into one of eight
 categories:
 'A' = adjective, 'D' = determiner, 'P' = preposition,
-'N' = common/proper noun, 'O' = all else
+'N' = common/proper noun, 'M' = verb modifiers, 'V' = verbs,
+'C' = coordinating conjunction, 'O' = all else
+NOTE: 'M', 'C', and 'V' tags are currently only compatible with the PTB tagset.
 }
 \examples{
 pos_tags <- c("VB", "JJ", "NN", "NN")
 coarsen_POS_tags(pos_tags)
 }
-

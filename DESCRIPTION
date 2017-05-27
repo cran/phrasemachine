@@ -1,8 +1,8 @@
 Package: phrasemachine
 Type: Package
 Title: Simple Phrase Extraction
-Version: 1.0.0
-Date: 2016-10-23
+Version: 1.1.1
+Date: 2017-05-25
 Author: Matthew J. Denny, Abram Handler, Brendan O'Connor
 Maintainer: Matthew J. Denny <mdenny@psu.edu>
 Description: Simple noun phrase extraction using part-of-speech information.
@@ -12,10 +12,10 @@ URL: http://slanglab.cs.umass.edu/phrases/
 License: GPL-3
 Imports: NLP, openNLP, stringr, quanteda
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: testthat, knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-10-24 12:49:36 UTC; matthewjdenny
+Packaged: 2017-05-26 23:57:19 UTC; matthewjdenny
 Repository: CRAN
-Date/Publication: 2016-10-24 17:14:25
+Date/Publication: 2017-05-27 13:49:35 UTC

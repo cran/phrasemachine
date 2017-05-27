@@ -4,7 +4,9 @@
 #'
 #' @param documents A vector of strings (one per document).
 #' @param regex The regular expression used to find phrases. Defaults to
-#' "(A|N)*N(PD*(A|N)*N)*", the "SimpleNP" grammar in Handler et al. 2016.
+#' "(A|N)*N(PD*(A|N)*N)*", the "SimpleNP" grammar in Handler et al. 2016. A
+#' vector of regular expressions may also be provided if the user wishes to
+#' match more than one.
 #' @param maximum_ngram_length The maximum length phrases returned. Defaults to
 #' 8. Increasing this number can greatly increase runtime.
 #' @param minimum_ngram_length The minimum length phrases returned. Defaults to
@@ -16,6 +18,11 @@
 #' string.
 #' @param return_tag_sequences Logical indicating whether tag sequences should
 #' be returned along with phrases. Defaults to FALSE.
+#' @param memory The default amount of memory (512MB) assigned to the NLP
+#' package to POS tag documents is often not enough for large documents, which
+#' can lead to a "java.lang.OutOfMemoryError". The memory argument defaults to
+#' "-Xmx512M" (512MB) in this package, and can be increased if necessary to
+#' accommodate very large documents.
 #' @examples
 #' phrasemachine("Hello there my red good cat.")
 #' @return A list object.
@@ -25,10 +32,12 @@ phrasemachine <- function(documents,
                           maximum_ngram_length = 8,
                           minimum_ngram_length = 2,
                           return_phrase_vectors = TRUE,
-                          return_tag_sequences = FALSE) {
+                          return_tag_sequences = FALSE,
+                          memory = "-Xmx512M") {
 
     # tag documents
-    tagged_documents <- POS_tag_documents(documents)
+    tagged_documents <- POS_tag_documents(documents,
+                                          memory = memory)
 
     # extract phrases
     phrases <- extract_phrases(tagged_documents,

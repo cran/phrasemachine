@@ -6,13 +6,16 @@
 \usage{
 phrasemachine(documents, regex = "(A|N)*N(PD*(A|N)*N)*",
   maximum_ngram_length = 8, minimum_ngram_length = 2,
-  return_phrase_vectors = TRUE, return_tag_sequences = FALSE)
+  return_phrase_vectors = TRUE, return_tag_sequences = FALSE,
+  memory = "-Xmx512M")
 }
 \arguments{
 \item{documents}{A vector of strings (one per document).}
 
 \item{regex}{The regular expression used to find phrases. Defaults to
-"(A|N)*N(PD*(A|N)*N)*", the "SimpleNP" grammar in Handler et al. 2016.}
+"(A|N)*N(PD*(A|N)*N)*", the "SimpleNP" grammar in Handler et al. 2016. A
+vector of regular expressions may also be provided if the user wishes to
+match more than one.}
 
 \item{maximum_ngram_length}{The maximum length phrases returned. Defaults to
 8. Increasing this number can greatly increase runtime.}
@@ -28,6 +31,12 @@ string.}
 
 \item{return_tag_sequences}{Logical indicating whether tag sequences should
 be returned along with phrases. Defaults to FALSE.}
+
+\item{memory}{The default amount of memory (512MB) assigned to the NLP
+package to POS tag documents is often not enough for large documents, which
+can lead to a "java.lang.OutOfMemoryError". The memory argument defaults to
+"-Xmx512M" (512MB) in this package, and can be increased if necessary to
+accommodate very large documents.}
 }
 \value{
 A list object.
@@ -39,4 +48,3 @@ Extracts phrases from a set of documents using the
 \examples{
 phrasemachine("Hello there my red good cat.")
 }
-

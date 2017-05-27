@@ -1,21 +1,30 @@
 #' @title POS tag documents
-#' @description Annotates documents (proived as a character vector with one
+#' @description Annotates documents (provided as a character vector with one
 #' entry per document) with pars-of-speech (POS) tags using the openNLP POS
 #' tagger
 #'
 #' @param documents A vector of strings (one per document).
+#' @param memory The default amount of memory (512MB) assigned to the NLP
+#' package to POS tag documents is often not enough for large documents, which
+#' can lead to a "java.lang.OutOfMemoryError". The memory argument defaults to
+#' "-Xmx512M" (512MB) in this package, and can be increased if necessary to
+#' accommodate very large documents.
 #' @return A list object.
 #' @examples
 #' \dontrun{
 #' # load data
-#' corp <- quanteda::corpus(quanteda::inaugTexts)
-#' documents <- quanteda::texts(corp)[1:5]
+#' documents <- quanteda::data_corpus_inaugural
+#  documents <- documents[1:10,]
 #'
 #' # run tagger
 #' tagged_documents <- POS_tag_documents(documents)
 #' }
 #' @export
-POS_tag_documents <- function(documents){
+POS_tag_documents <- function(documents,
+                              memory = "-Xmx512M"){
+
+    # set the amount of heap space available to Java in the NLP package
+    options(java.parameters = memory)
 
     # NULL out to deal with R CMD check note
     type <- NULL
